@@ -2,7 +2,7 @@
 
 Mục tiêu: từ một máy mới, clone repo, tải dữ liệu, rồi dựng lại 5 tệp đã nộp (`1_120A.zip`, `2_D250doconly.zip`, `3_CHrrf.zip`, `4_120A-en3.zip`, `5_120A-en10.zip`), **trùng từng byte** với các ZIP đã nộp. Chỉ cần làm theo thứ tự các bước dưới đây. Mỗi bước có lệnh kiểm kết quả trước khi sang bước sau.
 
-Lệnh viết cho bash: Linux, hoặc Git Bash trên Windows (không dùng WSL bash của `System32`). Đã kiểm: Windows 11 + Git Bash, Python 3.12, ngày 03/11/2026, cả 5 tệp PASS (thuyết minh mục 5.4). Linux chưa kiểm.
+Lệnh viết cho bash: Linux, hoặc Git Bash trên Windows (không dùng WSL bash của `System32`). Đã kiểm: Windows 11 + Git Bash, Python 3.12, ngày 03/11/2026, cả 5 tệp PASS. Linux chưa kiểm.
 
 ## 0. Cần chuẩn bị
 
@@ -113,12 +113,12 @@ ch-rrf        PASS     3_CHrrf.zip (CH-rrf)                   …/s49-public/chr
 * PASS chỉ được báo khi ZIP do **chính lần chạy này** ghi ra và trùng từng byte với tệp đã nộp cùng tên trong `submissions/`. Có thể tự đối chiếu: `cmp <zip dựng ra> submissions/<tên tệp>`.
 * Log của từng nhóm và báo cáo JSON nằm ở `$R2AI_ROOT/out/runs/reproduce/`. Báo cáo validator của BTC cho từng ZIP là tệp `*.validate.json` đặt cạnh ZIP; mỗi tệp phải có `"ok": true`.
 * Thư mục làm việc của 120A-en3/en10 mang dấu thời gian của lần chạy. Hai nhóm `120a` và `public` ghi vào thư mục cố định `out/runs/s49-120a/{3b,3c}` và `out/runs/s49-public/`. Lượt kiểm của đội chạy từ một gốc mới. Nếu muốn chạy lại hai nhóm này từ đầu, dùng một `R2AI_ROOT` mới hoặc đổi tên các thư mục đó trước khi chạy.
-* Các dòng sau là bình thường, không phải lỗi: `pool.npz differs from 45f69e56 (not read by the cosine13 apply …)` và `cmax shards differ in bytes from the archived manifests (content checked separately)`. Thuyết minh mục 5.5 giải thích lý do.
+* Các dòng sau là bình thường, không phải lỗi: `pool.npz differs from 45f69e56 (not read by the cosine13 apply …)` và `cmax shards differ in bytes from the archived manifests (content checked separately)`.
 
 **Kiểm thêm (không bắt buộc, không phải bài nộp):**
 
 ```bash
-python -m r2ai.reproduce --root "$R2AI_ROOT" 120a-nop1      # 120A dựng thuần từ corpus, không dùng text khôi phục (thuyết minh mục 5.5)
+python -m r2ai.reproduce --root "$R2AI_ROOT" 120a-nop1      # 120A dựng thuần từ corpus, không dùng text khôi phục (`DATA.md` mục 5)
 ```
 
 ## 7. Kiểm thử mã (tuỳ chọn)

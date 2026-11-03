@@ -39,7 +39,7 @@ Hệ thống là một pipeline **truy hồi dense → xếp hạng lại bằng
 
 * Không huấn luyện hay fine-tune mô hình; chỉ dùng mô hình open-weight công khai (lớn nhất 4B tham số).
 * Không dùng LLM sinh văn bản; mọi đoạn trả về là chuỗi con nguyên văn của tài liệu.
-* Bước dựng bài nộp (từ các tệp điểm đã lưu đến ZIP) chạy trên CPU, tất định, và đã được kiểm dựng lại **trùng từng byte** cho cả 5 bài nộp private (mục 5.4).
+* Bước dựng bài nộp (từ các tệp điểm đã lưu đến ZIP) chạy trên CPU, tất định, và đã được kiểm dựng lại **trùng từng byte** cho cả 5 bài nộp private.
 
 ## 1.3 Kiến trúc và các thành phần
 
@@ -71,7 +71,7 @@ Tên module dạng `sNN` (`r2ai.s36`, `scripts/s45/` …) là số đợt phát 
 * **Đoạn t256:** cắt theo trường (tiêu đề / câu hỏi / trả lời / thân bài) và đoạn văn, tối đa 256 token, lưu offset ký tự để trích nguyên văn; mỗi đoạn có vector BGE-M3 riêng.
 * **Pool ứng viên:** tích vô hướng giữa vector câu hỏi và vector tài liệu trên toàn corpus. Cỡ pool:
   * cấu hình CH-rrf, D250-doconly: 300 tài liệu / câu hỏi;
-  * cấu hình 120A: round(1,3 · K_q) tài liệu, trong đó K_q là số tài liệu mà hệ thống thế hệ trước của đội (P1) đã chọn cho câu hỏi đó (xem mục 5.5).
+  * cấu hình 120A: round(1,3 · K_q) tài liệu, trong đó K_q là số tài liệu mà hệ thống thế hệ trước của đội (P1) đã chọn cho câu hỏi đó.
 * Khi điểm bằng nhau, thứ tự theo vị trí trong corpus (tất định).
 
 ## 1.6 Xếp hạng lại và chọn kết quả đầu ra
@@ -159,7 +159,7 @@ Thư mục dữ liệu: https://drive.google.com/drive/folders/1NUw099da7rR4zd_j
 | `r2ai-runs-inputs.tar` | vector tài liệu và câu hỏi, Pharmacity | 2,2 GB | mọi bài nộp |
 | `r2ai-runs-scores.tar` | tệp điểm 4B, C-max, Jina cho các cặp trong pool | 0,61 GB | mọi bài nộp (dựng lại không cần GPU) |
 | `r2ai-runs-meta.tar` | manifest, tham số hiệu chỉnh | 34 MB | mọi bài nộp |
-| `r2ai-s49-inputs.tar` | `kq_counts.parquet`, `p1_chunks.parquet`, `p1_chunks_chrrf.parquet` (mục 5.5) | 10 MB | 120A, 120A-en3/en10, CH-rrf |
+| `r2ai-s49-inputs.tar` | `kq_counts.parquet`, `p1_chunks.parquet`, `p1_chunks_chrrf.parquet` | 10 MB | 120A, 120A-en3/en10, CH-rrf |
 | `r2ai-data-en-pubmed.tar` | abstract PubMed + vector | 1,19 GB | 120A-en3/en10 |
 | `r2ai-submissions.tar` | 5 ZIP private + bản tham chiếu | 0,70 GB | CH-rrf, D250-doconly (mốc so sánh thứ tự tài liệu) |
 
@@ -221,7 +221,7 @@ Hướng dẫn từng bước cho người chấm, kèm lệnh kiểm sau mỗi 
 
 | Mức | Phần cứng | Thời gian |
 |---|---|---|
-| A. Dựng lại bài nộp từ tệp điểm | CPU, RAM ≥ 16 GB, ổ trống ≥ 60 GB | khoảng 4 giờ 25 phút cho 5 tệp nộp (`--all`, mục 5.4) |
+| A. Dựng lại bài nộp từ tệp điểm | CPU, RAM ≥ 16 GB, ổ trống ≥ 60 GB | khoảng 4 giờ 25 phút cho 5 tệp nộp (`--all`) |
 | B. Chấm lại reranker | GPU: 2×T4 (Kaggle) cho 4B; GPU ≥ 6 GB cho C-max | 4B khoảng 15 giờ / 360.000 cặp; C-max khoảng 10 giờ |
 
 Đã kiểm trên Windows (Git Bash); Linux chưa kiểm.
@@ -253,33 +253,6 @@ Lệnh tự so mỗi ZIP đầu ra với tệp đã nộp (mục 1.7) và chỉ 
 
 * 4B: chạy `notebooks/s36-kaggle-4b-final.ipynb` trên Kaggle (2×T4) với tệp cặp xuất từ bước truy hồi, rồi nạp điểm về.
 * C-max: `scripts/s32/run_score.ps1`, `scripts/s37/run_cmax.ps1` (GPU máy).
-
-## 5.4 Kết quả kiểm tái hiện
-
-Kiểm ngày 03/11/2026 bằng **một lượt** `python -m r2ai.reproduce` (11:29 → 16:08, mã thoát 0) trong môi trường sạch:
-
-* thư mục gốc mới, chỉ chứa 8 gói giải nén từ thư mục chia sẻ (kiểm toàn vẹn gói và từng tệp sau giải nén) cùng 2 tệp đề bài BTC tải từ `AIGuruTinix/ViBioMIR`;
-* venv mới cài theo `configs/environment.constraints.txt`, mã của repo này;
-* `HF_HOME` mới chỉ chứa snapshot BGE-M3 và Qwen3-Reranker-0.6B theo revision ghim (từng tệp khớp metadata Hugging Face và `model-pin.json`), `HF_HUB_OFFLINE=1`.
-
-| Tệp | Kết quả | Thời gian nhóm |
-|---|---|---|
-| `1_120A.zip` | PASS, trùng từng byte | 185,2 phút (nhóm 120A) |
-| `4_120A-en3.zip` | PASS, trùng từng byte | trong nhóm 120A |
-| `5_120A-en10.zip` | PASS, trùng từng byte | trong nhóm 120A |
-| `2_D250doconly.zip` | PASS, trùng từng byte | 79,4 phút (nhóm public) |
-| `3_CHrrf.zip` | PASS, trùng từng byte | trong nhóm public |
-| 120A-nop1 (kiểm thêm) | PASS, trùng từng byte | trong nhóm 120A |
-
-Hai nhóm mất 264,6 phút (khoảng 4 giờ 25 phút) trên laptop Intel Core i5-13420H, RAM 16 GB, Windows 11 + Git Bash; các bước dựng chỉ dùng CPU. Validator S26 báo `ok` cho cả 8 ZIP (thêm bản R0). Các đoạn lấy từ P1 được đối chiếu với `p1_chunks.parquet` / `p1_chunks_chrrf.parquet`, các đoạn còn lại đều là chuỗi con của text canonical.
-
-Chưa kiểm: chấm lại reranker từ đầu (dùng tệp điểm đã lưu); chạy trên Linux.
-
-## 5.5 Ghi chú minh bạch
-
-* **K_q (cấu hình 120A).** Pool của 120A dùng số tài liệu mỗi câu hỏi do hệ thống thế hệ trước của đội (P1, 18/10/2026) chọn. Tệp ZIP của P1 không còn; K_q được khôi phục chính xác từ báo cáo kiểm duyệt của P1 còn lưu, ghi thành `kq_counts.parquet` (kiểm: cỡ pool khớp bản gốc ở 1.200/1.200 câu hỏi).
-* **Đoạn trích từ bộ trích xuất cũ.** 1.836 đoạn của 120A (956 tài liệu) và 1.834 đoạn của CH-rrf (989 tài liệu) lấy text từ bộ trích xuất của P1 trên chính các URL trong corpus. Tệp nguồn gốc đã mất, nên text được khôi phục từ chính bài nộp và lưu thành `p1_chunks.parquet`.
-* **Bản dựng thuần từ dữ liệu nguồn.** Để đối chiếu, kèm bản 120A-nop1 dựng hoàn toàn từ corpus canonical, không dùng `p1_chunks.parquet`. Bản này có cùng tài liệu và cùng tài liệu mang đoạn với 120A; khác text ở 1.800 đoạn (0,86%). Tương tự, bản R0 là CH-rrf dựng thuần từ corpus canonical.
 
 # Phụ lục: thuật ngữ
 

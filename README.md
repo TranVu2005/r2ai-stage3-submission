@@ -16,7 +16,7 @@ Dữ liệu: https://drive.google.com/drive/folders/1NUw099da7rR4zd_j3pg_acTUHjf
 | `4_120A-en3.zip` | 120A + 3 tài liệu tiếng Anh | `python -m r2ai.reproduce 120a-en3` |
 | `5_120A-en10.zip` | 120A + 10 tài liệu tiếng Anh | `python -m r2ai.reproduce 120a-en10` |
 
-`python -m r2ai.reproduce --all` dựng lại cả 5 tệp và báo PASS khi tệp dựng ra trùng từng byte với tệp đã nộp. Các ZIP có trong thư mục `submissions/` của link dữ liệu và là tệp đính kèm của GitHub Release `v1.0` (https://github.com/TranVu2005/r2ai-stage3-submission/releases/tag/v1.0-submission). Mục kiểm thêm, không phải bài nộp: `120a-nop1` (120A dựng thuần từ corpus, không dùng text khôi phục, xem thuyết minh mục 5.5).
+`python -m r2ai.reproduce --all` dựng lại cả 5 tệp và báo PASS khi tệp dựng ra trùng từng byte với tệp đã nộp. Các ZIP có trong thư mục `submissions/` của link dữ liệu và là tệp đính kèm của GitHub Release `v1.0` (https://github.com/TranVu2005/r2ai-stage3-submission/releases/tag/v1.0-submission). Mục kiểm thêm, không phải bài nộp: `120a-nop1` (120A dựng thuần từ corpus, không dùng text khôi phục, xem `DATA.md` mục 5).
 
 ## Quickstart
 
