@@ -1,0 +1,168 @@
+{
+ "note": "Upload packages for the hand-off (S49). Paths: 'repo:' = relative to the repository checkout that holds the data (R2AI root), 'abs:' = absolute. 'as' = path inside the tar. Every package is extracted into the root of a checkout; the layout then matches data/ and out/runs/ of the repository. 'copy' packages are shipped as they are (already a tar).",
+ "packages": [
+  {
+   "name": "r2ai-data-canonical",
+   "required": true,
+   "role": "canonical corpus (vi + zh, 887,151 docs), t256 chunks, BGE-M3 chunk vectors",
+   "include": [
+    {
+     "src": "repo:data/canonical-20261018",
+     "as": "data/canonical-20261018"
+    }
+   ]
+  },
+  {
+   "name": "r2ai-data-120ask",
+   "required": true,
+   "role": "120ask segments crawled in S37 (docs, chunks, vectors, C-max top-3)",
+   "include": [
+    {
+     "src": "repo:data/s37_120ask",
+     "as": "data/s37_120ask"
+    }
+   ]
+  },
+  {
+   "name": "r2ai-data-en-pubmed",
+   "required": false,
+   "role": "English PubMed abstracts lane (Europe PMC), needed only for the EN-hedge copy (4_120A-en3)",
+   "include": [
+    {
+     "src": "repo:data/s37_en",
+     "as": "data/s37_en"
+    }
+   ]
+  },
+  {
+   "name": "r2ai-runs-inputs",
+   "required": true,
+   "role": "doc-level BGE-M3 vectors, Pharmacity lots, query vectors, scorer script, rh100 rehearsal, model pins",
+   "include": [
+    {
+     "src": "repo:out/runs/s26-gold-structure/full/full_doc_dense.npz",
+     "as": "out/runs/s26-gold-structure/full/full_doc_dense.npz"
+    },
+    {
+     "src": "repo:out/runs/s27-pharmacity",
+     "as": "out/runs/s27-pharmacity"
+    },
+    {
+     "src": "repo:out/runs/s31-strong-judge/pool-extra/kaggle/judge_score.py",
+     "as": "out/runs/s31-strong-judge/pool-extra/kaggle/judge_score.py"
+    },
+    {
+     "src": "repo:out/runs/s32-chunk-judge/pool/supplement_vectors.npz",
+     "as": "out/runs/s32-chunk-judge/pool/supplement_vectors.npz"
+    },
+    {
+     "src": "repo:out/runs/s37/cmax-d300/supplement_vectors.npz",
+     "as": "out/runs/s37/cmax-d300/supplement_vectors.npz"
+    },
+    {
+     "src": "repo:out/runs/reranker-trial/model-pin.json",
+     "as": "out/runs/reranker-trial/model-pin.json"
+    },
+    {
+     "src": "repo:out/runs/s40/rh100",
+     "as": "out/runs/s40/rh100"
+    },
+    {
+     "src": "repo:out/runs/s40/abl/rehearsal-input",
+     "as": "out/runs/s40/abl/rehearsal-input"
+    },
+    {
+     "src": "abs:<ARCHIVE>/s26_query_vectors/s29_query_vectors.npz",
+     "as": "out/runs/s29-qwen-judge/query_vectors.npz"
+    },
+    {
+     "src": "abs:<ARCHIVE>/s26_query_vectors",
+     "as": "out/runs/s26_query_vectors"
+    }
+   ]
+  },
+  {
+   "name": "r2ai-s49-inputs",
+   "required": true,
+   "role": "120A and CH-rrf rebuild inputs: K_q / K90 per query (from the P1-vi+10 approval audit), P1 chunk texts of 120A and of CH-rrf, the audit itself",
+   "include": [
+    {
+     "src": "repo:out/runs/s49-120a/inputs/kq_counts.parquet",
+     "as": "out/runs/s49-120a/inputs/kq_counts.parquet"
+    },
+    {
+     "src": "repo:out/runs/s49-120a/inputs/p1_chunks.parquet",
+     "as": "out/runs/s49-120a/inputs/p1_chunks.parquet"
+    },
+    {
+     "src": "repo:out/runs/s49-120a/inputs/p1_chunks_chrrf.parquet",
+     "as": "out/runs/s49-120a/inputs/p1_chunks_chrrf.parquet"
+    },
+    {
+     "src": "repo:out/runs/s49-120a/inputs/P1-vi+10.approval.json",
+     "as": "out/runs/s49-120a/inputs/P1-vi+10.approval.json"
+    }
+   ]
+  },
+  {
+   "name": "r2ai-submissions",
+   "required": false,
+   "role": "the private submissions (4 sent + 5_120A-en10) and two reference rebuilds (R0, 120A-nop1), to compare SHA256",
+   "include": [
+    {
+     "src": "abs:<SHARE>/1_120A.zip",
+     "as": "submissions/1_120A.zip"
+    },
+    {
+     "src": "abs:<SHARE>/2_D250doconly.zip",
+     "as": "submissions/2_D250doconly.zip"
+    },
+    {
+     "src": "abs:<SHARE>/3_CHrrf.zip",
+     "as": "submissions/3_CHrrf.zip"
+    },
+    {
+     "src": "abs:<SHARE>/4_120A-en3.zip",
+     "as": "submissions/4_120A-en3.zip"
+    },
+    {
+     "src": "abs:<SHARE>/5_120A-en10.zip",
+     "as": "submissions/5_120A-en10.zip"
+    },
+    {
+     "src": "repo:out/runs/s45/restore/out/runs/s45-compose/R0-full+w768-t1536.zip",
+     "as": "submissions/reference/R0-full+w768-t1536.zip"
+    },
+    {
+     "src": "repo:out/runs/s49-120a/root/runs/s49-120a/3b2/120A-p4b-v3-full+w768-t1536.zip",
+     "as": "submissions/reference/120A-nop1-full+w768-t1536.zip"
+    }
+   ]
+  },
+  {
+   "name": "r2ai-runs-scores",
+   "required": true,
+   "copy": "abs:<ARCHIVE>/judge-public.tar",
+   "role": "every reranker score file of the public run (4B, C-max 0.6B, Jina, S29 0.6B), pools and pair registries; paths out/runs/..."
+  },
+  {
+   "name": "r2ai-runs-meta",
+   "required": true,
+   "from_tar": "abs:<ARCHIVE>/out-runs-meta.tar.xz",
+   "prefixes": [
+    "out/runs/s26-gold-structure/",
+    "out/runs/s29-qwen-judge/",
+    "out/runs/s31-strong-judge/",
+    "out/runs/s36-fuse4/",
+    "out/runs/s37/",
+    "out/runs/s38-chunk-metric-v2/",
+    "out/runs/reranker-trial/",
+    "out/runs/s40/",
+    "out/runs/s41/",
+    "out/runs/s43/",
+    "out/runs/release/"
+   ],
+   "role": "run manifests, calibration json (cal.json, ef2-free.json), build reports and logs of the runs behind the submissions; paths out/runs/..."
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+flowchart TB
+  subgraph D["1. Dữ liệu và chỉ mục (offline)"]
+    U["links_corpus.parquet<br/>(URL của BTC)"] --> C1["Crawl trực tiếp vi / zh<br/>+ Common Crawl (WARC)<br/>+ 120ask (VPS) + Pharmacity<br/>+ Europe PMC (en)"]
+    C1 --> X["Trích xuất theo domain<br/>(title / question / answer / body)"]
+    X --> K["Corpus canonical<br/>887.151 doc, 1 bản / doc_id<br/>+ segment 120ask 73.000 doc"]
+    K --> CH["Phân đoạn t256<br/>(offset nguyên văn)"]
+    K --> E1["BGE-M3 dense CLS<br/>vector mức doc (512 token)"]
+    CH --> E2["BGE-M3<br/>vector chunk t256"]
+  end
+  subgraph R["2. Truy hồi"]
+    Q["1.200 query vi"] --> EQ["BGE-M3<br/>vector query"]
+    EQ --> P["Pool cosine / query: top-300 (CH-rrf, D250)<br/>hoặc top-round(1,3·K_q) (120A)<br/>canonical + Pharmacity + 120ask"]
+    E1 --> P
+  end
+  subgraph RR["3. Rerank (3–4 nguồn)"]
+    P --> S4["Qwen3-Reranker-4B<br/>P(yes) trên doc 512 token<br/>(Kaggle 2×T4)"]
+    P --> SC["C-max: Qwen3-Reranker-0.6B<br/>max trên top-3 chunk t256"]
+    P --> SJ["Jina Reranker v3.5 listwise<br/>(chỉ 120A)"]
+    E2 --> SC
+    P --> RRF["RRF k = 60<br/>cosine · 4B · C-max (· Jina)"]
+    S4 --> RRF
+    SC --> RRF
+    SJ --> RRF
+  end
+  subgraph O["4. Chọn đầu ra"]
+    S4 --> CAL["Hiệu chỉnh p_cal = σ(a·logit P4B + b)<br/>G_q = kỳ vọng số gold"]
+    RRF --> EF2["Cắt EF2: số doc / query<br/>tối đa F2 kỳ vọng"]
+    CAL --> EF2
+    EF2 --> CAR["Carrier CR-fair<br/>ceil(ρ·|D_q|) doc đầu, tổng 146,29 × N"]
+    CAR --> CMP["Ghép chunk full+w768:<br/>thân bài nguyên văn<br/>+ cửa sổ 768 nếu > 1.536 token"]
+    SC --> CMP
+    CMP --> V["Validator: nguyên văn,<br/>chunk ⊂ relevant_docs, ≤ 2 chunk/doc,<br/>ZIP < trần"]
+    V --> Z["ZIP bài nộp"]
+  end
