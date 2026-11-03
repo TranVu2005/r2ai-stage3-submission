@@ -150,7 +150,7 @@ Trang web thay đổi theo thời gian nên crawl lại **không** cho kết qu�
 
 ## 2.5 Truy cập dữ liệu
 
-Thư mục dữ liệu: https://drive.google.com/drive/folders/1NUw099da7rR4zd_j3pg_acTUHjfAH09B. Trong đó: `data/` (8 gói và tệp `.SHA256SUMS` của từng gói), `submissions/` (5 ZIP bài nộp), `SHA256SUMS`, `data-manifest.csv`, `README_DATA.txt`.
+Thư mục dữ liệu: https://drive.google.com/drive/folders/1NUw099da7rR4zd_j3pg_acTUHjfAH09B. Trong đó: `data/` (8 gói và tệp `.SHA256SUMS` của từng gói), `submissions/` (5 ZIP bài nộp), `SHA256SUMS`, `README_DATA.txt`.
 
 | Gói (trong `data/` của thư mục chia sẻ) | Nội dung | Dung lượng | Cần cho |
 |---|---|---:|---|

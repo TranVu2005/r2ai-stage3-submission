@@ -6,7 +6,7 @@ Tài liệu này giúp người đọc tìm đúng mã cho từng bước của 
 
 Nhiều module và thư mục mang tên dạng `sNN` (`r2ai.s36`, `scripts/s45/` …). `NN` là số thứ tự đợt phát triển trong dự án; tên được **giữ nguyên** vì đường import, tệp config ghim SHA256 và các tệp kết quả đã ghi đều tham chiếu đến chúng. Bảng dưới ánh xạ từng tên sang chức năng.
 
-Một số tệp và gói dữ liệu cũng mang số đợt (`r2ai-s49-inputs.tar`, `out/runs/s49-120a/`…). Tên này được giữ nguyên vì SHA256 trong `SHA256SUMS`, `data-manifest.csv` và các tài liệu đều ghi theo tên tệp. `s49` là đợt dựng lại các bài nộp từ gói chia sẻ.
+Một số tệp và gói dữ liệu cũng mang số đợt (`r2ai-s49-inputs.tar`, `out/runs/s49-120a/`…). Tên này được giữ nguyên vì SHA256 trong các tệp `SHA256SUMS` và các tài liệu đều ghi theo tên tệp. `s49` là đợt dựng lại các bài nộp từ gói chia sẻ.
 
 Cột "Vai trò":
 

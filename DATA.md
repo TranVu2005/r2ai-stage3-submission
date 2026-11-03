@@ -55,7 +55,7 @@ Script: `tools/package.py`, nhóm tệp khai trong `tools/packages.json`. Đầu
 * `<gói>.tar` (không nén lại, vì parquet / npz / zip đã nén);
 * `<gói>.SHA256SUMS` (SHA256 từng tệp bên trong, đường dẫn tính từ thư mục gốc giải nén; 7 gói còn mang bản sao bên trong tar với tên `SHA256SUMS-<gói>.txt`, riêng `r2ai-runs-scores.tar` thì không);
 * `SHA256SUMS` (SHA256 của chính các tệp gói);
-* `data-manifest.csv` (gói, đường dẫn, bytes, SHA256 từng tệp).
+* `data-manifest.csv` (gói, đường dẫn, bytes, SHA256 từng tệp; chỉ để tra cứu, không có trong thư mục chia sẻ).
 
 **Cách dùng:** đường dẫn trong gói là `data/…`, `out/runs/…` và `submissions/…`, nên mọi gói được giải nén vào **cùng một** thư mục gốc (`R2AI_ROOT`; có thể là chính checkout của repo). Từng bước có lệnh kiểm: [`docs/REPRODUCE.md`](docs/REPRODUCE.md). Mọi gói nằm trong thư mục `data/` của link chia sẻ (cuối mục này); `python -m r2ai.reproduce --all` (5 tệp nộp) cần cả 8 gói.
 
@@ -74,10 +74,9 @@ Script: `tools/package.py`, nhóm tệp khai trong `tools/packages.json`. Đầu
 
 ```
 R2AI-Stage3/
-  data/            8 tệp r2ai-*.tar + 8 tệp r2ai-*.SHA256SUMS + SHA256SUMS + data-manifest.csv
+  data/            8 tệp r2ai-*.tar + 8 tệp r2ai-*.SHA256SUMS + SHA256SUMS
   submissions/     1_120A.zip, 2_D250doconly.zip, 3_CHrrf.zip, 4_120A-en3.zip, 5_120A-en10.zip
   SHA256SUMS       kiểm toàn vẹn 8 gói và 5 ZIP sau khi tải (sha256sum -c SHA256SUMS)
-  data-manifest.csv
   README_DATA.txt  giải nén vào đâu, kiểm toàn vẹn thế nào
 ```
 

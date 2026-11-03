@@ -38,10 +38,10 @@ Thư mục chia sẻ (chỉ đọc): https://drive.google.com/drive/folders/1NUw
 
 ```
 R2AI-Stage3/
-  data/            8 gói r2ai-*.tar, 8 tệp r2ai-*.SHA256SUMS (SHA256 từng tệp trong gói), SHA256SUMS, data-manifest.csv
+  data/            8 gói r2ai-*.tar, 8 tệp r2ai-*.SHA256SUMS (SHA256 từng tệp trong gói), SHA256SUMS
   submissions/     5 ZIP bài nộp: 1_120A.zip … 5_120A-en10.zip
   SHA256SUMS       SHA256 của 8 gói và 5 ZIP (đường dẫn tương đối từ thư mục này)
-  data-manifest.csv, README_DATA.txt
+  README_DATA.txt
 ```
 
 **Tải cả thư mục, giữ nguyên cấu trúc** (`data/`, `submissions/`, `SHA256SUMS`). Với `--all`, cả 8 gói đều cần. Thư mục `submissions/` ở gốc chỉ để đối chiếu nhanh, vì các ZIP này cũng có trong `data/r2ai-submissions.tar`; nếu không tải nó, dùng `sha256sum -c SHA256SUMS --ignore-missing`. Bảng ở `DATA.md` mục 4 cho biết gói nào ứng với bài nào nếu chỉ chạy một phần. Cách tải:
