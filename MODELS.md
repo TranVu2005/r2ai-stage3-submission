@@ -15,7 +15,7 @@ Mô hình lịch sử: các mô hình dưới đây không chạy khi dựng bà
 
 | mô hình | revision | vì sao nhắc tới |
 |---|---|---|
-| BAAI/bge-reranker-v2-m3 (Apache-2.0) | `953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e` | Dùng cùng Qwen3-Reranker-0.6B để xếp hạng doc vi trong bài nộp cũ P1-vi+10 (18/10). Từ P1-vi+10, 120A chỉ lấy **số doc mỗi query** (K_q), xem `docs/s49-reproduce-120a.md` |
+| BAAI/bge-reranker-v2-m3 (Apache-2.0) | `953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e` | Dùng cùng Qwen3-Reranker-0.6B để xếp hạng doc vi trong bài nộp cũ P1-vi+10 (18/10). Từ P1-vi+10, 120A chỉ lấy **số doc mỗi query** (K_q), xem `DATA.md` mục 5 |
 | Qwen2.5-7B-Instruct (Ollama `qwen2.5:7b`, Q4_K_M) | (bản Ollama 20/08/2026) | Chỉ dùng trong một thử nghiệm dịch query sang tiếng Anh (bị loại). Không có trong bài nộp nào |
 
 ## 2. Cấu hình từng mô hình
